@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:tns="http://projet-al.esp.sn/soap/utilisateurs"
+           targetNamespace="http://projet-al.esp.sn/soap/utilisateurs"
+           elementFormDefault="qualified">
+
+    <!-- Types communs -->
+    <xs:complexType name="utilisateurType">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long" minOccurs="0"/>
+            <xs:element name="login" type="xs:string"/>
+            <xs:element name="motDePasse" type="xs:string" minOccurs="0"/>
+            <xs:element name="nom" type="xs:string"/>
+            <xs:element name="prenom" type="xs:string"/>
+            <xs:element name="email" type="xs:string"/>
+            <xs:element name="role" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- Authentification -->
+    <xs:element name="authentifierRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="login" type="xs:string"/>
+                <xs:element name="motDePasse" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="authentifierResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="succes" type="xs:boolean"/>
+                <xs:element name="estAdmin" type="xs:boolean"/>
+                <xs:element name="message" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- Lister les utilisateurs -->
+    <xs:element name="listerUtilisateursRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="jetonApi" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="listerUtilisateursResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="succes" type="xs:boolean"/>
+                <xs:element name="message" type="xs:string"/>
+                <xs:element name="utilisateur" type="tns:utilisateurType" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- Ajouter un utilisateur -->
+    <xs:element name="ajouterUtilisateurRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="jetonApi" type="xs:string"/>
+                <xs:element name="utilisateur" type="tns:utilisateurType"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="ajouterUtilisateurResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="succes" type="xs:boolean"/>
+                <xs:element name="message" type="xs:string"/>
+                <xs:element name="utilisateur" type="tns:utilisateurType" minOccurs="0"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- Modifier un utilisateur -->
+    <xs:element name="modifierUtilisateurRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="jetonApi" type="xs:string"/>
+                <xs:element name="id" type="xs:long"/>
+                <xs:element name="utilisateur" type="tns:utilisateurType"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="modifierUtilisateurResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="succes" type="xs:boolean"/>
+                <xs:element name="message" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- Supprimer un utilisateur -->
+    <xs:element name="supprimerUtilisateurRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="jetonApi" type="xs:string"/>
+                <xs:element name="id" type="xs:long"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="supprimerUtilisateurResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="succes" type="xs:boolean"/>
+                <xs:element name="message" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+</xs:schema>
