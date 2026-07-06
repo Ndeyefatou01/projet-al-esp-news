@@ -123,4 +123,4 @@ Les opérations disponibles (`authentifier`, `listerUtilisateurs`, `ajouterUtili
 
 ## Auteurs
 
-Projet réalisé par Fatima Mbow et son équipe, dans le cadre du cursus à l'École Supérieure Polytechnique (ESP/UCAD).
+Projet réalisé par Ndeye Fatou Mbow et son équipe à savoir Amadou Aboubackrim Fall et Ndeye Yacine Diallo , dans le cadre du cursus à l'École Supérieure Polytechnique (ESP/UCAD).
