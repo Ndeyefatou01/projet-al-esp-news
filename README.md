@@ -69,7 +69,8 @@ Par défaut, la configuration suppose un utilisateur MySQL `root` sans mot de pa
 Depuis le dossier `projet-al-backend` :
 
 ```bash
-./mvnw clean spring-boot:run
+cd projet-al-backend
+.\mvnw.cmd clean spring-boot:run
 ```
 
 `clean` supprime les anciens fichiers compilés avant de relancer — utile si tu rencontres des erreurs de build ou après avoir modifié des dépendances.
@@ -87,6 +88,7 @@ Depuis le dossier `projet-al-frontend`, dans un terminal séparé :
 
 ```bash
 npm install
+cd C:\Users\HP\Downloads\projet-al-backend\projet-al-frontend
 npm run dev
 ```
 
