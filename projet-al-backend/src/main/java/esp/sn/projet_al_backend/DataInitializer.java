@@ -5,7 +5,6 @@ import esp.sn.projet_al_backend.entity.Categorie;
 import esp.sn.projet_al_backend.entity.Utilisateur;
 import esp.sn.projet_al_backend.repository.ArticleRepository;
 import esp.sn.projet_al_backend.repository.CategorieRepository;
-import esp.sn.projet_al_backend.entity.Utilisateur;
 import esp.sn.projet_al_backend.repository.UtilisateurRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;

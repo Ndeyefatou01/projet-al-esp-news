@@ -3,7 +3,6 @@ package esp.sn.projet_al_backend.controller;
 import esp.sn.projet_al_backend.dto.ArticleDTO;
 import esp.sn.projet_al_backend.dto.CategorieAvecArticlesDTO;
 import esp.sn.projet_al_backend.entity.Article;
-import esp.sn.projet_al_backend.entity.Categorie;
 import esp.sn.projet_al_backend.repository.ArticleRepository;
 import esp.sn.projet_al_backend.repository.CategorieRepository;
 import lombok.RequiredArgsConstructor;
