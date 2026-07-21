@@ -68,13 +68,19 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
-                // Routes publiques : consultation des articles/catégories (visiteurs)
-                .requestMatchers("/api/auth/**").permitAll()
+                
+
+                //  règles de gestion 
+                .requestMatchers(HttpMethod.GET, "/api/articles/admin/**").hasAnyRole("EDITEUR", "ADMIN")
+                .requestMatchers(HttpMethod.GET, "/api/articles/mes-articles/**").hasAnyRole("EDITEUR", "ADMIN")
+                .requestMatchers(HttpMethod.GET, "/api/articles/mes-articles").hasAnyRole("EDITEUR", "ADMIN")
+                .requestMatchers(HttpMethod.GET, "/api/articles/auteur/**").hasAnyRole("EDITEUR", "ADMIN")
+
+                // Routes publiques 
                 .requestMatchers(HttpMethod.GET, "/api/articles/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/categories/**").permitAll()
-                .requestMatchers("/uploads/**").permitAll()
-                .requestMatchers("/ws/**").permitAll() // le SOAP gère son propre jeton en interne
-                // Gestion des articles/catégories : éditeurs et admins
+
+                // Gestion des articles/catégories 
                 .requestMatchers(HttpMethod.POST, "/api/articles/**").hasAnyRole("EDITEUR", "ADMIN")
                 .requestMatchers(HttpMethod.PUT, "/api/articles/**").hasAnyRole("EDITEUR", "ADMIN")
                 .requestMatchers(HttpMethod.PATCH, "/api/articles/**").hasAnyRole("EDITEUR", "ADMIN")
@@ -82,7 +88,8 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/api/categories/**").hasAnyRole("EDITEUR", "ADMIN")
                 .requestMatchers(HttpMethod.PUT, "/api/categories/**").hasAnyRole("EDITEUR", "ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/api/categories/**").hasAnyRole("EDITEUR", "ADMIN")
-                // Gestion des utilisateurs et jetons API : admin uniquement
+
+                // Gestion des utilisateurs et jetons API
                 .requestMatchers("/api/utilisateurs/**").hasRole("ADMIN")
                 .requestMatchers("/api/tokens/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
