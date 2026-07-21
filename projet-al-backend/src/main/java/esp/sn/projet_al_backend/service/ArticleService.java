@@ -76,12 +76,7 @@ public class ArticleService {
         return articleRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Article non trouvé avec l'id : " + id));
     }
-    /**
-     * Récupère un article pour un appelant qui n'est ni éditeur ni admin (visiteur simple,
-     * ou non authentifié). Un article en BROUILLON n'est jamais renvoyé à ce type d'appelant,
-     * même s'il en connaît l'id (correctif de la faille identifiée : avant ce correctif,
-     * GET /api/articles/{id} exposait aussi les brouillons à n'importe quel visiteur).
-     */
+
     public Article findByIdVisiblePourVisiteur(Long id) {
         Article article = findById(id);
         if (article.getStatut() != Article.Statut.PUBLIE) {
