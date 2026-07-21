@@ -20,13 +20,28 @@ function App() {
         <Routes>
           <Route path="/" element={<Accueil />} />
           <Route path="/connexion" element={<Connexion />} />
-          <Route path="/admin/dashboard" element={<AdminDashboard />} />
-          <Route path="/editeur/dashboard" element={<EditeurDashboard />} />
-          <Route path="/admin/articles" element={<AdminArticles />} />
-          <Route path="/admin/categories" element={<AdminCategories />} />
-          <Route path="/admin/utilisateurs" element={<AdminUtilisateurs />} />
-          <Route path="/admin/tokens" element={<AdminTokens />} />
           <Route path="/articles/:id" element={<DetailArticle />} />
+          
+          <Route path="/editeur/dashboard" element={
+            <RouteProtegee roleRequis="EDITEUR"><EditeurDashboard /></RouteProtegee>
+          } />
+          <Route path="/admin/articles" element={
+            <RouteProtegee roleRequis="EDITEUR"><AdminArticles /></RouteProtegee>
+          } />
+          <Route path="/admin/categories" element={
+            <RouteProtegee roleRequis="EDITEUR"><AdminCategories /></RouteProtegee>
+          } />
+
+          <Route path="/admin/dashboard" element={
+            <RouteProtegee roleRequis="ADMIN"><AdminDashboard /></RouteProtegee>
+          } />
+          <Route path="/admin/utilisateurs" element={
+            <RouteProtegee roleRequis="ADMIN"><AdminUtilisateurs /></RouteProtegee>
+          } />
+          <Route path="/admin/tokens" element={
+            <RouteProtegee roleRequis="ADMIN"><AdminTokens /></RouteProtegee>
+          } />
+
         </Routes>
       </BrowserRouter>
     </AuthProvider>
