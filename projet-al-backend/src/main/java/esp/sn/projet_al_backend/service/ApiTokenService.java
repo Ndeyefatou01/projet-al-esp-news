@@ -2,6 +2,7 @@ package esp.sn.projet_al_backend.service;
 
 import esp.sn.projet_al_backend.entity.ApiToken;
 import esp.sn.projet_al_backend.entity.Utilisateur;
+import esp.sn.projet_al_backend.exception.ResourceNotFoundException;
 import esp.sn.projet_al_backend.repository.ApiTokenRepository;
 import esp.sn.projet_al_backend.repository.UtilisateurRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +23,7 @@ public class ApiTokenService {
 
     public ApiToken create(String description, String loginAdmin) {
         Utilisateur admin = utilisateurRepository.findByLogin(loginAdmin)
-                .orElseThrow(() -> new RuntimeException("Administrateur non trouvé"));
+                .orElseThrow(() -> new ResourceNotFoundException("Administrateur non trouvé"));
 
         ApiToken apiToken = new ApiToken();
         apiToken.setDescription(description);
@@ -34,7 +35,7 @@ public class ApiTokenService {
 
     public void revoke(Long id) {
         ApiToken apiToken = apiTokenRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Jeton non trouvé avec l'id : " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Jeton non trouvé avec l'id : " + id));
         apiToken.setActif(false);
         apiTokenRepository.save(apiToken);
     }

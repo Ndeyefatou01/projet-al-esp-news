@@ -1,6 +1,8 @@
 package esp.sn.projet_al_backend.service;
 
 import esp.sn.projet_al_backend.entity.Utilisateur;
+import esp.sn.projet_al_backend.exception.ConflitMetierException;
+import esp.sn.projet_al_backend.exception.ResourceNotFoundException;
 import esp.sn.projet_al_backend.repository.UtilisateurRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,15 +23,18 @@ public class UtilisateurService {
 
     public Utilisateur findById(Long id) {
         return utilisateurRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé avec l'id : " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Utilisateur non trouvé avec l'id : " + id));
     }
 
     public Utilisateur create(Utilisateur utilisateur) {
+        if (utilisateur.getMotDePasse() == null || utilisateur.getMotDePasse().isBlank()) {
+            throw new ConflitMetierException("Le mot de passe est obligatoire à la création d'un utilisateur");
+        }
         if (utilisateurRepository.existsByLogin(utilisateur.getLogin())) {
-            throw new RuntimeException("Ce login est déjà utilisé");
+            throw new ConflitMetierException("Ce login est déjà utilisé");
         }
         if (utilisateurRepository.existsByEmail(utilisateur.getEmail())) {
-            throw new RuntimeException("Cet email est déjà utilisé");
+            throw new ConflitMetierException("Cet email est déjà utilisé");
         }
         utilisateur.setMotDePasse(passwordEncoder.encode(utilisateur.getMotDePasse()));
         return utilisateurRepository.save(utilisateur);

@@ -88,8 +88,15 @@ public class ArticleController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Article> getById(@PathVariable Long id) {
-        return ResponseEntity.ok(articleService.findById(id));
+    public ResponseEntity<Article> getById(@PathVariable Long id, Authentication authentication) {
+        boolean estEditeurOuAdmin = authentication != null && authentication.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_EDITEUR") || a.getAuthority().equals("ROLE_ADMIN"));
+
+        Article article = estEditeurOuAdmin
+                ? articleService.findById(id)
+                : articleService.findByIdVisiblePourVisiteur(id);
+
+        return ResponseEntity.ok(article);
     }
 
     @PostMapping

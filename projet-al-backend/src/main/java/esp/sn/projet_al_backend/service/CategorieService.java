@@ -1,6 +1,8 @@
 package esp.sn.projet_al_backend.service;
 
 import esp.sn.projet_al_backend.entity.Categorie;
+import esp.sn.projet_al_backend.exception.ConflitMetierException;
+import esp.sn.projet_al_backend.exception.ResourceNotFoundException;
 import esp.sn.projet_al_backend.repository.CategorieRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,12 +21,12 @@ public class CategorieService {
 
     public Categorie findById(Long id) {
         return categorieRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Catégorie non trouvée avec l'id : " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Catégorie non trouvée avec l'id : " + id));
     }
 
     public Categorie create(Categorie categorie) {
         if (categorieRepository.existsByNom(categorie.getNom())) {
-            throw new RuntimeException("Une catégorie avec ce nom existe déjà");
+            throw new ConflitMetierException("Une catégorie avec ce nom existe déjà");
         }
         return categorieRepository.save(categorie);
     }

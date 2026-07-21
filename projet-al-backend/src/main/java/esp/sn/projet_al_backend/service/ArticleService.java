@@ -3,6 +3,7 @@ package esp.sn.projet_al_backend.service;
 import esp.sn.projet_al_backend.entity.Article;
 import esp.sn.projet_al_backend.entity.Categorie;
 import esp.sn.projet_al_backend.entity.Utilisateur;
+import esp.sn.projet_al_backend.exception.ResourceNotFoundException;
 import esp.sn.projet_al_backend.repository.ArticleRepository;
 import esp.sn.projet_al_backend.repository.CategorieRepository;
 import esp.sn.projet_al_backend.repository.UtilisateurRepository;
@@ -73,15 +74,27 @@ public class ArticleService {
 
     public Article findById(Long id) {
         return articleRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Article non trouvé avec l'id : " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Article non trouvé avec l'id : " + id));
+    }
+    /**
+     * Récupère un article pour un appelant qui n'est ni éditeur ni admin (visiteur simple,
+     * ou non authentifié). Un article en BROUILLON n'est jamais renvoyé à ce type d'appelant,
+     * même s'il en connaît l'id (correctif de la faille identifiée : avant ce correctif,
+     * GET /api/articles/{id} exposait aussi les brouillons à n'importe quel visiteur).
+     */
+    public Article findByIdVisiblePourVisiteur(Long id) {
+        Article article = findById(id);
+        if (article.getStatut() != Article.Statut.PUBLIE) {
+            throw new ResourceNotFoundException("Article non trouvé avec l'id : " + id);
+        }
+        return article;
     }
 
     public Article create(Article article, Long categorieId, String loginAuteur) {
         Categorie categorie = categorieRepository.findById(categorieId)
-                .orElseThrow(() -> new RuntimeException("Catégorie non trouvée avec l'id : " + categorieId));
+                .orElseThrow(() -> new ResourceNotFoundException("Catégorie non trouvée avec l'id : " + categorieId));
         Utilisateur auteur = utilisateurRepository.findByLogin(loginAuteur)
-                .orElseThrow(() -> new RuntimeException("Auteur non trouvé"));
-
+                .orElseThrow(() -> new ResourceNotFoundException("Auteur non trouvé"));
         article.setCategorie(categorie);
         article.setAuteur(auteur);
         if (article.getStatut() == null) {
@@ -98,7 +111,7 @@ public class ArticleService {
 
         if (categorieId != null) {
             Categorie categorie = categorieRepository.findById(categorieId)
-                    .orElseThrow(() -> new RuntimeException("Catégorie non trouvée avec l'id : " + categorieId));
+                    .orElseThrow(() -> new ResourceNotFoundException("Catégorie non trouvée avec l'id : " + categorieId));
             article.setCategorie(categorie);
         }
 
